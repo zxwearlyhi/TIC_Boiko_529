@@ -131,3 +131,116 @@ plot_graph(Dt_values, snr_values, "Сигнал/шум", "Dt", "SNR", "snr")
 # ВЫВОД
 # ===============================
 print("Готоо! Всі графіки збережені")
+
+# ===============================
+# ПРАКТИЧНА 4
+# ===============================
+
+levels = [4, 16, 64, 256]
+
+variance_quant = []
+snr_quant = []
+
+for level in levels:
+
+    # минимум и максимум сигнала
+    signal_min = np.min(filtered_signal)
+    signal_max = np.max(filtered_signal)
+
+    # шаг квантования
+    q_step = (signal_max - signal_min) / level
+
+    # квантование
+    quantized_signal = np.round(
+        (filtered_signal - signal_min) / q_step
+    ) * q_step + signal_min
+
+    # ошибка
+    error = quantized_signal - filtered_signal
+
+    # дисперсия и SNR
+    var_signal = np.var(filtered_signal)
+    var_error = np.var(error)
+
+    variance_quant.append(var_error)
+    snr_quant.append(var_signal / var_error)
+
+    # ===============================
+    # ГРАФИК КВАНТОВАННОГО СИГНАЛА
+    # ===============================
+    plot_graph(
+        t,
+        quantized_signal,
+        f"Квантований сигнал {level} рівнів",
+        "Час",
+        "Амплітуда",
+        f"quantized_{level}"
+    )
+
+    # ===============================
+    # СПЕКТР
+    # ===============================
+    spectrum_quant = fft.fft(quantized_signal)
+    spectrum_quant = np.abs(fft.fftshift(spectrum_quant))
+
+    plot_graph(
+        freqs,
+        spectrum_quant,
+        f"Спектр {level} рівнів",
+        "Частота",
+        "Амплітуда",
+        f"spectrum_quant_{level}"
+    )
+
+    # ===============================
+    # ВЫВОД ТАБЛИЦЫ
+    # ===============================
+    print("\n=======================")
+    print(f"Рівнів квантування: {level}")
+    print("=======================")
+
+    print("Перші 20 значень:")
+
+    for i in range(20):
+
+        value = quantized_signal[i]
+
+        # код числа
+        code = int((value - signal_min) / q_step)
+
+        # количество бит
+        bits = int(np.log2(level))
+
+        # перевод в двоичный код
+        binary = format(code, f'0{bits}b')
+
+        print(
+            f"{i}: "
+            f"{round(value, 2)} -> "
+            f"{code} -> "
+            f"{binary}"
+        )
+
+# ===============================
+# ФИНАЛЬНЫЕ ГРАФИКИ
+# ===============================
+
+plot_graph(
+    levels,
+    variance_quant,
+    "Дисперсія квантування",
+    "Кількість рівнів",
+    "Дисперсія",
+    "variance_quant"
+)
+
+plot_graph(
+    levels,
+    snr_quant,
+    "Сигнал/шум квантування",
+    "Кількість рівнів",
+    "SNR",
+    "snr_quant"
+)
+
+print("\nПрактична 4 завершено!")

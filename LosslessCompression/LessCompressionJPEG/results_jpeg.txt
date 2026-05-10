@@ -1,0 +1,18 @@
+image_one.jpg
+Quality 100 -> Compression ratio: 0.39
+Quality 80 -> Compression ratio: 1.09
+Quality 50 -> Compression ratio: 2.08
+Quality 20 -> Compression ratio: 3.6
+
+image_two.jpg
+Quality 100 -> Compression ratio: 0.36
+Quality 80 -> Compression ratio: 1.2
+Quality 50 -> Compression ratio: 2.31
+Quality 20 -> Compression ratio: 4.07
+
+image_three.jpg
+Quality 100 -> Compression ratio: 0.34
+Quality 80 -> Compression ratio: 1.0
+Quality 50 -> Compression ratio: 1.86
+Quality 20 -> Compression ratio: 2.99
+
